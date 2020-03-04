@@ -1,25 +1,35 @@
+import { Injectable ,EventEmitter} from "@angular/core";
+import { LoggingService } from "./logging.service";
+  
+
+@Injectable()
 export class AccountsService {
 
-    accounts = [
-        {
-          name: 'Master Account',
-          status: 'active'
-        },
-        {
-          name: 'Testaccount',
-          status: 'inactive'
-        },
-        {
-          name: 'Hidden Account',
-          status: 'unknown'
-        }
-      ];
+  updateStatus = new EventEmitter<string>();
 
-    onStatusAdded(name: string, status: string){
-        this.accounts.push({name: name,status: status});
+  constructor(private loggingService: LoggingService) {}
+  accounts = [
+    {
+      name: "Master Account",
+      status: "active"
+    },
+    {
+      name: "Testaccount",
+      status: "inactive"
+    },
+    {
+      name: "Hidden Account",
+      status: "unknown"
     }
+  ];
 
-    onStatusUpdated(id: number, status: string){
-        this.accounts[id].status = status;
-    }
+  onStatusAdded(name: string, status: string) {
+    this.loggingService.logStatusChange(status);
+    this.accounts.push({ name: name, status: status });
+  }
+
+  onStatusUpdated(id: number, status: string) {
+    this.loggingService.logStatusChange(status);
+    this.accounts[id].status = status;
+  }
 }
